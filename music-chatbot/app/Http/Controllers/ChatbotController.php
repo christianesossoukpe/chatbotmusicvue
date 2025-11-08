@@ -146,7 +146,7 @@ class ChatbotController extends Controller
         ];
 
         foreach ($reponses as $reponse) {
-            // Logique d'analyse des réponses par catégorie
+            // Logique d'analyse des réponse par catégorie
         }
 
         // Conseils généraux basés sur la note
