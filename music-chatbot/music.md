@@ -1,254 +1,448 @@
-# Correction de l'erreur d'import Inertia.js
+Voici une structure complète pour votre projet de chatbot coach musical. Je vais vous proposer une organisation complète :
 
-L'erreur indique que le module `@inertiajs/vue3` n'est pas trouvé. Voici comment résoudre ce problème et configurer correctement votre dashboard.
-
-## 1. Installation des dépendances manquantes
-
-```bash
-npm install @inertiajs/vue3 @inertiajs/progress
-```
-
-## 2. Configuration de app.js (resources/js/app.js)
-
-```javascript
-import './bootstrap';
-import '../css/app.css';
-
-import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-
-createInertiaApp({
-    title: (title) => `${title} - Music Chatbot`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .mount(el);
-    },
-});
-```
-
-## 3. Dashboard fonctionnel avec Inertia (resources/js/Pages/Dashboard.vue)
-
-```vue
-<template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-    <!-- Header -->
-    <header class="bg-white shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <h1 class="text-2xl font-bold text-indigo-700">MusicBot Dashboard</h1>
-          <form @submit.prevent="logout" class="flex items-center">
-            <span class="text-gray-600 mr-4">Bonjour, {{ $page.props.auth.user.name }}</span>
-            <button 
-              type="submit" 
-              class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition duration-300"
-            >
-              Déconnexion
-            </button>
-          </form>
-        </div>
-      </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-center space-x-8 py-4">
-          <Link 
-            href="/chatbot" 
-            class="text-gray-700 hover:text-indigo-600 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center"
-            :class="{ 'bg-indigo-100 text-indigo-700': $page.url === '/chatbot' }"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-            Chatbot
-          </Link>
-          
-          <Link 
-            href="/profile" 
-            class="text-gray-700 hover:text-indigo-600 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center"
-            :class="{ 'bg-indigo-100 text-indigo-700': $page.url === '/profile' }"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            Mon Profil
-          </Link>
-          
-          <Link 
-            href="/analytics" 
-            class="text-gray-700 hover:text-indigo-600 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center"
-            :class="{ 'bg-indigo-100 text-indigo-700': $page.url === '/analytics' }"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            Analytics
-          </Link>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white rounded-lg shadow-lg p-8 text-center">
-        <h1 class="text-3xl font-bold text-indigo-700 mb-6">Bienvenue sur votre tableau de bord 🎵</h1>
-        <p class="text-gray-600 mb-8">Gérez votre expérience musicale et interagissez avec notre assistant intelligent.</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div class="bg-indigo-50 p-6 rounded-lg border border-indigo-100">
-            <div class="bg-indigo-100 p-3 rounded-full inline-flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-indigo-800 mb-2">Chatbot Musical</h3>
-            <p class="text-gray-600 mb-4">Discutez avec notre assistant pour améliorer votre pratique musicale.</p>
-            <Link 
-              href="/chatbot" 
-              class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded transition duration-300"
-            >
-              Commencer
-            </Link>
-          </div>
-          
-          <div class="bg-green-50 p-6 rounded-lg border border-green-100">
-            <div class="bg-green-100 p-3 rounded-full inline-flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-green-800 mb-2">Votre Profil</h3>
-            <p class="text-gray-600 mb-4">Consultez et modifiez vos informations personnelles et musicales.</p>
-            <Link 
-              href="/profile" 
-              class="inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300"
-            >
-              Voir le profil
-            </Link>
-          </div>
-          
-          <div class="bg-purple-50 p-6 rounded-lg border border-purple-100">
-            <div class="bg-purple-100 p-3 rounded-full inline-flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-purple-800 mb-2">Analytics</h3>
-            <p class="text-gray-600 mb-4">Analysez vos progrès et obtenez des insights sur votre pratique musicale.</p>
-            <Link 
-              href="/analytics" 
-              class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded transition duration-300"
-            >
-              Voir les stats
-            </Link>
-          </div>
-        </div>
-        
-        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 text-left">
-          <h2 class="text-xl font-semibold text-blue-800 mb-4">💡 Conseils du jour</h2>
-          <p class="text-gray-700 mb-2">🎸 Pensez à accorder votre instrument avant chaque session de pratique.</p>
-          <p class="text-gray-700 mb-2">🎵 Travaillez votre posture pour améliorer votre endurance lors des performances.</p>
-          <p class="text-gray-700">📊 Consultez régulièrement vos analytics pour suivre vos progrès.</p>
-        </div>
-      </div>
-    </main>
-  </div>
-</template>
-
-<script setup>
-import { Link } from '@inertiajs/vue3'
-
-// Fonction de déconnexion
-const logout = () => {
-  // Utilisez Inertia pour la déconnexion
-  Inertia.post('/logout')
-}
-</script>
-
-<style scoped>
-/* Styles spécifiques au composant */
-</style>
-```
-
-## 4. Configuration des routes (routes/web.php)
-
-```php
-<?php
-
-use App\Http\Controllers\ChatbotController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-
-// Route pour le dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-// Routes d'authentification
-Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-});
-
-// Routes du chatbot (protégées)
-Route::middleware('auth')->group(function () {
-    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot');
-    Route::post('/chatbot/response', [ChatbotController::class, 'storeResponse'])->name('chatbot.response');
-    Route::get('/chatbot/history', [ChatbotController::class, 'getHistory'])->name('chatbot.history');
-});
-
-// Route racine qui redirige vers le dashboard
-Route::get('/', function () {
-    return redirect('/dashboard');
-});
-```
-
-## 5. Création du contrôleur Dashboard
-
-```bash
-php artisan make:controller DashboardController
-```
+## 1. Contrôleur Chatbot amélioré
 
 ```php
 <?php
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DashboardController extends Controller
+class ChatbotController extends Controller
 {
+    private $questionsParInstrument = [
+        'guitare' => [
+            'technique' => [
+                'Maîtrises-tu les barrés sur tout le manche ?',
+                'Quelle est ta vitesse en picking alterné ?',
+                'Comment gères-tu les transitions entre accords complexes ?',
+                'Utilises-tu les techniques de slide et bend avec précision ?'
+            ],
+            'theorie' => [
+                'Connais-tu toutes les triades sur le manche ?',
+                'Peux-tu improviser sur une grille de blues ?',
+                'Maîtrises-tu les modes grecs ?',
+                'Sais-tu analyser une progression d'accords ?'
+            ],
+            'creativite' => [
+                'Composes-tu tes propres morceaux ?',
+                'Comment développes-tus tes idées mélodiques ?',
+                'Arranges-tu des reprises personnellement ?'
+            ]
+        ],
+        'piano' => [
+            'technique' => [
+                'Maîtrises-tu les gammes en tierces et sixtes ?',
+                'Quelle est ta dextérité main gauche ?',
+                'Utilises-tu le pédalage avec précision ?',
+                'Peux-tu jouer des passages rapides clairement ?'
+            ],
+            'theorie' => [
+                'Lis-tu la clé de fa couramment ?',
+                'Connais-tu les accords de 7ème et 9ème ?',
+                'Sais-tu harmoniser une mélodie ?',
+                'Maîtrises-tu la construction des cadences ?'
+            ],
+            'creativite' => [
+                'Improvises-tu dans différents styles ?',
+                'Composes-tu avec une structure définie ?',
+                'Sais-tu reharmoniser un standard ?'
+            ]
+        ],
+        'chant' => [
+            'technique' => [
+                'Maîtrises-tu ton souffle et le soutien diaphragmatique ?',
+                'Quelle est l'étendue de ta tessiture ?',
+                'Utilises-tu les résonnateurs efficacement ?',
+                'Comment gères-tu les passages de registre ?'
+            ],
+            'theorie' => [
+                'Reconnais-tu les intervalles à l'oreille ?',
+                'Sais-tu reproduire une mélodie entendue ?',
+                'Comprends-tu la structure harmonique d'un morceau ?',
+                'Maîtrises-tu le solfège rythmique ?'
+            ],
+            'creativite' => [
+                'Improvis-tu des mélodies spontanément ?',
+                'Composes-tu tes propres textes et mélodies ?',
+                'Interprètes-tu avec ta personnalité artistique ?'
+            ]
+        ]
+    ];
+
     public function index()
     {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Chatbot/Index');
+    }
+
+    public function demarrerEvaluation(Request $request)
+    {
+        $instrument = $request->instrument;
+        
+        if (!array_key_exists($instrument, $this->questionsParInstrument)) {
+            return response()->json(['error' => 'Instrument non supporté'], 400);
+        }
+
+        // Mélanger les questions pour chaque catégorie
+        $questionsMelangees = [];
+        foreach ($this->questionsParInstrument[$instrument] as $categorie => $questions) {
+            shuffle($questions);
+            $questionsMelangees = array_merge($questionsMelangees, 
+                array_slice($questions, 0, 7) // Prendre 7 questions par catégorie max
+            );
+        }
+
+        // S'assurer d'avoir exactement 20 questions
+        shuffle($questionsMelangees);
+        $questionsSelectionnees = array_slice($questionsMelangees, 0, 20);
+
+        return response()->json([
+            'questions' => $questionsSelectionnees,
+            'total_questions' => count($questionsSelectionnees)
+        ]);
+    }
+
+    public function evaluerReponses(Request $request)
+    {
+        $reponses = $request->reponses;
+        $instrument = $request->instrument;
+        
+        $note = $this->calculerNote($reponses);
+        $evaluation = $this->genererEvaluation($note, $instrument);
+        $conseils = $this->genererConseils($reponses, $instrument, $note);
+
+        return response()->json([
+            'note' => $note,
+            'evaluation' => $evaluation,
+            'conseils' => $conseils
+        ]);
+    }
+
+    private function calculerNote($reponses)
+    {
+        $points = 0;
+        foreach ($reponses as $reponse) {
+            // Supposons que chaque réponse est notée de 1 à 5
+            $points += $reponse['score'] ?? 3;
+        }
+        return min(20, round(($points / (count($reponses) * 5)) * 20, 1));
+    }
+
+    private function genererEvaluation($note, $instrument)
+    {
+        if ($note >= 18) return "Excellent ! Maîtrise avancée de $instrument";
+        if ($note >= 15) return "Très bon niveau, technique solide";
+        if ($note >= 12) return "Niveau intermédiaire, de bons acquis";
+        if ($note >= 8) return "Débutant avancé, continuez ainsi";
+        return "Débutant, beaucoup de potentiel à développer";
+    }
+
+    private function genererConseils($reponses, $instrument, $note)
+    {
+        $conseils = [];
+        
+        // Analyser les réponses pour des conseils personnalisés
+        $scoresParCategorie = [
+            'technique' => 0,
+            'theorie' => 0, 
+            'creativite' => 0
+        ];
+
+        foreach ($reponses as $reponse) {
+            // Logique d'analyse des réponses par catégorie
+        }
+
+        // Conseils généraux basés sur la note
+        if ($note < 10) {
+            $conseils[] = "Travailler les bases techniques quotidiennement";
+            $conseils[] = "Pratiquer au moins 20 minutes par jour";
+            $conseils[] = "Étudier le solfège fondamental";
+        } elseif ($note < 15) {
+            $conseils[] = "Développer la régularité dans votre pratique";
+            $conseils[] = "Explorer différents styles musicaux";
+            $conseils[] = "Travailler l'improvisation basique";
+        } else {
+            $conseils[] = "Perfectionner les techniques avancées";
+            $conseils[] = "Développer votre identité musicale";
+            $conseils[] = "Explorer la composition et l'arrangement";
+        }
+
+        return $conseils;
     }
 }
 ```
 
-## 6. Vérification de l'installation
+## 2. Routes mises à jour
 
-Après ces modifications, exécutez les commandes suivantes :
+```php
+<?php
 
-```bash
-# Installer les dépendances
-npm install
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatbotController;
 
-# Compiler les assets
-npm run dev
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
-# Lancer le serveur
-php artisan serve
+// Auth
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Routes protégées
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return inertia('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot');
+    Route::post('/chatbot/demarrer', [ChatbotController::class, 'demarrerEvaluation'])->name('chatbot.demarrer');
+    Route::post('/chatbot/evaluer', [ChatbotController::class, 'evaluerReponses'])->name('chatbot.evaluer');
+});
 ```
 
-Vérifiez que l'erreur `@inertiajs/vue3` est résolue et que votre dashboard s'affiche correctement à l'adresse http://localhost:8000/dashboard.
+## 3. Composant Vue.js complet
 
-Les modifications principales apportées :
-- Utilisation du composant `Link` d'Inertia au lieu de `router-link`
-- Utilisation de `$page.url` pour vérifier la page active
-- Ajout de la fonction `logout` utilisant Inertia
-- Correction des imports avec `import { Link } from '@inertiajs/vue3'`
+```vue
+<template>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-2xl mx-auto px-4">
+      <!-- En-tête -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          🎵 Coach Musical Intelligent
+        </h1>
+        <p class="text-gray-600">
+          Évaluez vos compétences et recevez des conseils personnalisés
+        </p>
+      </div>
+
+      <!-- Étape 1: Sélection d'instrument -->
+      <div v-if="etape === 'selection'" class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Bonjour ! Quel instrument pratiquez-vous ?</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <button 
+            v-for="instrument in instruments" 
+            :key="instrument"
+            @click="selectionnerInstrument(instrument)"
+            class="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+          >
+            <span class="text-2xl mb-2 block">{{ getEmoji(instrument) }}</span>
+            {{ instrument.charAt(0).toUpperCase() + instrument.slice(1) }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Étape 2: Évaluation -->
+      <div v-if="etape === 'evaluation'" class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold">Évaluation - {{ instrumentSelectionne }}</h2>
+          <span class="text-sm text-gray-500">Question {{ questionActuelle + 1 }}/{{ questions.length }}</span>
+        </div>
+
+        <!-- Barre de progression -->
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+          <div 
+            class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            :style="{ width: `${((questionActuelle + 1) / questions.length) * 100}%` }"
+          ></div>
+        </div>
+
+        <!-- Question actuelle -->
+        <div class="mb-6">
+          <h3 class="text-lg font-medium mb-4">{{ questions[questionActuelle] }}</h3>
+          <div class="space-y-2">
+            <button 
+              v-for="score in [1,2,3,4,5]" 
+              :key="score"
+              @click="repondre(score)"
+              class="w-full p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              {{ getLibelleReponse(score) }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 3: Résultats -->
+      <div v-if="etape === 'resultats'" class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-center mb-6">🎉 Résultats de votre évaluation</h2>
+        
+        <!-- Note -->
+        <div class="text-center mb-6">
+          <div class="text-5xl font-bold text-blue-600 mb-2">{{ resultats.note }}/20</div>
+          <div class="text-lg text-gray-700">{{ resultats.evaluation }}</div>
+        </div>
+
+        <!-- Conseils -->
+        <div class="border-t pt-6">
+          <h3 class="text-xl font-semibold mb-4">💡 Conseils pour progresser</h3>
+          <ul class="space-y-2">
+            <li 
+              v-for="(conseil, index) in resultats.conseils" 
+              :key="index"
+              class="flex items-start"
+            >
+              <span class="text-green-500 mr-2">✓</span>
+              {{ conseil }}
+            </li>
+          </ul>
+        </div>
+
+        <button 
+          @click="recommencer"
+          class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Faire une nouvelle évaluation
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive } from 'vue'
+import { router } from '@inertiajs/vue3'
+
+const etape = ref('selection')
+const instrumentSelectionne = ref('')
+const questions = ref([])
+const questionActuelle = ref(0)
+const reponses = ref([])
+
+const resultats = reactive({
+  note: 0,
+  evaluation: '',
+  conseils: []
+})
+
+const instruments = ['guitare', 'piano', 'chant', 'batterie', 'violon', 'saxophone']
+
+function getEmoji(instrument) {
+  const emojis = {
+    guitare: '🎸',
+    piano: '🎹', 
+    chant: '🎤',
+    batterie: '🥁',
+    violon: '🎻',
+    saxophone: '🎷'
+  }
+  return emojis[instrument] || '🎵'
+}
+
+async function selectionnerInstrument(instrument) {
+  instrumentSelectionne.value = instrument
+  etape.value = 'evaluation'
+  
+  try {
+    const response = await fetch('/chatbot/demarrer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ instrument })
+    })
+    
+    const data = await response.json()
+    questions.value = data.questions
+  } catch (error) {
+    console.error('Erreur:', error)
+  }
+}
+
+function getLibelleReponse(score) {
+  const libelles = {
+    1: 'Pas du tout',
+    2: 'Un peu',
+    3: 'Moyennement', 
+    4: 'Bien',
+    5: 'Excellente maîtrise'
+  }
+  return libelles[score]
+}
+
+function repondre(score) {
+  reponses.value.push({
+    question: questions.value[questionActuelle.value],
+    score: score
+  })
+
+  if (questionActuelle.value < questions.value.length - 1) {
+    questionActuelle.value++
+  } else {
+    soumettreEvaluation()
+  }
+}
+
+async function soumettreEvaluation() {
+  try {
+    const response = await fetch('/chatbot/evaluer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        instrument: instrumentSelectionne.value,
+        reponses: reponses.value
+      })
+    })
+    
+    const data = await response.json()
+    resultats.note = data.note
+    resultats.evaluation = data.evaluation
+    resultats.conseils = data.conseils
+    etape.value = 'resultats'
+  } catch (error) {
+    console.error('Erreur:', error)
+  }
+}
+
+function recommencer() {
+  etape.value = 'selection'
+  instrumentSelectionne.value = ''
+  questions.value = []
+  questionActuelle.value = 0
+  reponses.value = []
+}
+</script>
+
+<style scoped>
+/* Styles personnalisés supplémentaires si besoin */
+</style>
+```
+
+## 4. Structure de base de données recommandée
+
+```php
+// Migration pour sauvegarder les évaluations
+Schema::create('evaluations_musicales', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained();
+    $table->string('instrument');
+    $table->decimal('note', 3, 1);
+    $table->text('evaluation');
+    $table->json('conseils');
+    $table->json('reponses');
+    $table->timestamps();
+});
+```
+
+Cette structure vous donne un chatbot musical complet avec :
+
+- **Sélection d'instrument** avec interface moderne
+- **20 questions aléatoires** adaptées à chaque instrument
+- **Système de notation** sur 20 points
+- **Évaluation automatique** du niveau
+- **Conseils personnalisés** pour progresser
+- **Interface responsive** et intuitive
+
+Vous pouvez facilement ajouter d'autres instruments en étendant le tableau `questionsParInstrument` dans le contrôleur.
